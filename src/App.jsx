@@ -1,7 +1,31 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 
 const MAX_MESSENGER = 'https://max.ru/'
+
+const BANNERS = [
+  {
+    id: 1,
+    tag: 'Новинки',
+    title: 'Весенняя коллекция 2026',
+    text: 'Платья и блузы из натуральных тканей — уже в каталоге',
+    tone: 'sand',
+  },
+  {
+    id: 2,
+    tag: 'Акция',
+    title: 'Скидки до −30%',
+    text: 'На верхнюю одежду и обувь до конца месяца',
+    tone: 'sage',
+  },
+  {
+    id: 3,
+    tag: 'Хиты',
+    title: 'Бестселлеры сезона',
+    text: 'Самые популярные модели — брюки, платья, тренчи',
+    tone: 'clay',
+  },
+]
 
 const CATEGORY_TREE = [
   {
@@ -36,6 +60,8 @@ const COLORS = [
   { name: 'Зелёный', hex: '#6b9080' },
 ]
 
+const COLOR_MAP = Object.fromEntries(COLORS.map((c) => [c.name, c.hex]))
+
 const PRODUCTS = [
   {
     id: 1,
@@ -49,8 +75,7 @@ const PRODUCTS = [
     colors: ['Чёрный', 'Бежевый'],
     image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop',
     badge: 'Новинка',
-    rating: 4.9,
-    reviews: 128,
+    description: 'Лёгкое платье из натурального шёлка с запахом и подкладкой. Идеально для офиса и вечера.',
   },
   {
     id: 2,
@@ -64,8 +89,7 @@ const PRODUCTS = [
     colors: ['Белый', 'Розовый'],
     image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&h=800&fit=crop',
     badge: '-20%',
-    rating: 4.7,
-    reviews: 56,
+    description: 'Воздушное хлопковое платье с открытыми плечами. Комфорт в жаркую погоду.',
   },
   {
     id: 3,
@@ -79,8 +103,7 @@ const PRODUCTS = [
     colors: ['Чёрный'],
     image: 'https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&h=800&fit=crop',
     badge: null,
-    rating: 4.8,
-    reviews: 34,
+    description: 'Элегантное мини-платье с деликатным блеском для особых случаев.',
   },
   {
     id: 4,
@@ -94,12 +117,11 @@ const PRODUCTS = [
     colors: ['Чёрный', 'Бежевый', 'Синий'],
     image: 'https://images.unsplash.com/photo-1594633312681-425a7b956cc1?w=600&h=800&fit=crop',
     badge: null,
-    rating: 4.6,
-    reviews: 89,
+    description: 'Брюки прямого кроя со стрелками из смесовой шерсти. База гардероба.',
   },
   {
     id: 5,
-    name: 'Брюки палazzo из тенсела',
+    name: 'Брюки палаццо из тенсела',
     brand: 'Studio Form',
     price: 4800,
     oldPrice: 6100,
@@ -109,8 +131,7 @@ const PRODUCTS = [
     colors: ['Бежевый', 'Белый'],
     image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&h=800&fit=crop',
     badge: 'Хит',
-    rating: 4.9,
-    reviews: 201,
+    description: 'Широкие брюки палаццо с высокой посадкой. Мягкая дrape и комфорт.',
   },
   {
     id: 6,
@@ -124,8 +145,7 @@ const PRODUCTS = [
     colors: ['Бежевый', 'Чёрный'],
     image: 'https://images.unsplash.com/photo-1539533018447-63fcce267634?w=600&h=800&fit=crop',
     badge: null,
-    rating: 5.0,
-    reviews: 17,
+    description: 'Тёплое двубортное пальто из кашемира. Классический силуэт на несколько сезонов.',
   },
   {
     id: 7,
@@ -139,8 +159,7 @@ const PRODUCTS = [
     colors: ['Белый', 'Бежевый', 'Зелёный'],
     image: 'https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=600&h=800&fit=crop',
     badge: '-15%',
-    rating: 4.5,
-    reviews: 42,
+    description: 'Льняная блуза с отложным воротником. Натуральная фактура, свободный крой.',
   },
   {
     id: 8,
@@ -154,8 +173,7 @@ const PRODUCTS = [
     colors: ['Чёрный', 'Бежевый'],
     image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&h=800&fit=crop',
     badge: 'Хит',
-    rating: 4.8,
-    reviews: 73,
+    description: 'Лоферы из натуральной кожи на низком каблуке. Универсальная повседневная модель.',
   },
   {
     id: 9,
@@ -169,8 +187,7 @@ const PRODUCTS = [
     colors: ['Бежевый'],
     image: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&h=800&fit=crop',
     badge: 'Новинка',
-    rating: 4.7,
-    reviews: 61,
+    description: 'Тренч свободного кроя из плотного хлопка с поясом. Вне времени.',
   },
   {
     id: 10,
@@ -184,8 +201,7 @@ const PRODUCTS = [
     colors: ['Белый', 'Чёрный'],
     image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&h=800&fit=crop',
     badge: null,
-    rating: 4.6,
-    reviews: 115,
+    description: 'Минималистичные кроссовки на лёгкой подошве. Для города и прогулок.',
   },
 ]
 
@@ -198,13 +214,75 @@ function messengerLink(product) {
   return `${MAX_MESSENGER}?text=${text}`
 }
 
-function ProductCard({ product }) {
+function BannerCarousel() {
+  const [index, setIndex] = useState(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % BANNERS.length)
+    }, 5000)
+    return () => clearInterval(timer)
+  }, [])
+
+  function goTo(i) {
+    setIndex((i + BANNERS.length) % BANNERS.length)
+  }
+
   return (
-    <article className="card">
+    <section className="banner" aria-label="Акции и новинки">
+      <div className="banner__track" style={{ transform: `translateX(-${index * 100}%)` }}>
+        {BANNERS.map((slide) => (
+          <article key={slide.id} className={`banner__slide banner__slide--${slide.tone}`}>
+            <span className="banner__tag">{slide.tag}</span>
+            <h2 className="banner__title">{slide.title}</h2>
+            <p className="banner__text">{slide.text}</p>
+            <button type="button" className="banner__cta">Заказать</button>
+          </article>
+        ))}
+      </div>
+      <button
+        type="button"
+        className="banner__nav banner__nav--prev"
+        aria-label="Предыдущий баннер"
+        onClick={() => goTo(index - 1)}
+      >
+        ‹
+      </button>
+      <button
+        type="button"
+        className="banner__nav banner__nav--next"
+        aria-label="Следующий баннер"
+        onClick={() => goTo(index + 1)}
+      >
+        ›
+      </button>
+      <div className="banner__dots">
+        {BANNERS.map((slide, i) => (
+          <button
+            key={slide.id}
+            type="button"
+            className={i === index ? 'is-active' : ''}
+            aria-label={`Баннер ${i + 1}`}
+            onClick={() => goTo(i)}
+          />
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function ProductCard({ product, onOpen }) {
+  return (
+    <article
+      className="card"
+      onClick={() => onOpen(product)}
+      onKeyDown={(e) => e.key === 'Enter' && onOpen(product)}
+      role="button"
+      tabIndex={0}
+    >
       <div className="card__image-wrap">
         <img src={product.image} alt={product.name} loading="lazy" />
         {product.badge && <span className="card__badge">{product.badge}</span>}
-        <button type="button" className="card__fav" aria-label="В избранное">♡</button>
       </div>
       <div className="card__body">
         <div className="card__price-row">
@@ -215,23 +293,102 @@ function ProductCard({ product }) {
         </div>
         <p className="card__brand">{product.brand}</p>
         <h2 className="card__title">{product.name}</h2>
-        <p className="card__rating">
-          <span className="card__star">★</span> {product.rating} · {product.reviews} отзывов
-        </p>
-        <div className="card__actions">
-          <button type="button" className="card__btn card__btn--cart">В корзину</button>
-          <button type="button" className="card__btn card__btn--order">Заказать</button>
-          <a
-            href={messengerLink(product)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="card__btn card__btn--ask"
-          >
-            Задать вопрос
-          </a>
-        </div>
       </div>
     </article>
+  )
+}
+
+function ProductModal({ product, onClose }) {
+  const [size, setSize] = useState(product.sizes[0] ?? null)
+  const [color, setColor] = useState(product.colors[0] ?? null)
+
+  useEffect(() => {
+    setSize(product.sizes[0] ?? null)
+    setColor(product.colors[0] ?? null)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [product])
+
+  return (
+    <div className="product-modal" role="dialog" aria-modal="true" aria-label={product.name}>
+      <button type="button" className="product-modal__backdrop" aria-label="Закрыть" onClick={onClose} />
+      <div className="product-modal__sheet">
+        <button type="button" className="product-modal__close" onClick={onClose} aria-label="Закрыть">
+          ✕
+        </button>
+
+        <div className="product-modal__image">
+          <img src={product.image} alt={product.name} />
+          {product.badge && <span className="card__badge">{product.badge}</span>}
+        </div>
+
+        <div className="product-modal__info">
+          <p className="product-modal__brand">{product.brand}</p>
+          <h2 className="product-modal__name">{product.name}</h2>
+          <div className="card__price-row">
+            <span className="card__price card__price--lg">{formatPrice(product.price)}</span>
+            {product.oldPrice && (
+              <span className="card__old-price">{formatPrice(product.oldPrice)}</span>
+            )}
+          </div>
+          <p className="product-modal__desc">{product.description}</p>
+
+          <div className="product-modal__section">
+            <p className="product-modal__label">Размер</p>
+            <div className="picker picker--sizes">
+              {product.sizes.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  className={size === item ? 'is-active' : ''}
+                  onClick={() => setSize(item)}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="product-modal__section">
+            <p className="product-modal__label">Цвет</p>
+            <div className="picker picker--colors">
+              {product.colors.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  className={color === item ? 'is-active' : ''}
+                  onClick={() => setColor(item)}
+                >
+                  <span
+                    className="picker__dot"
+                    style={{
+                      background: COLOR_MAP[item] ?? '#ccc',
+                      border: item === 'Белый' ? '1px solid #ddd' : 'none',
+                    }}
+                  />
+                  {item}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="product-modal__actions">
+            <button type="button" className="card__btn card__btn--cart">В корзину</button>
+            <button type="button" className="card__btn card__btn--order">Заказать</button>
+            <a
+              href={messengerLink(product)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card__btn card__btn--ask"
+            >
+              Задать вопрос
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -245,6 +402,9 @@ export default function App() {
   const [selectedSubcategory, setSelectedSubcategory] = useState(null)
   const [selectedSizes, setSelectedSizes] = useState([])
   const [selectedColors, setSelectedColors] = useState([])
+  const [activeProduct, setActiveProduct] = useState(null)
+
+  const isHome = !selectedCategory && !selectedSubcategory && !query.trim()
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -264,11 +424,11 @@ export default function App() {
 
       const matchesSizes =
         selectedSizes.length === 0 ||
-        selectedSizes.some((size) => item.sizes.includes(size))
+        selectedSizes.some((s) => item.sizes.includes(s))
 
       const matchesColors =
         selectedColors.length === 0 ||
-        selectedColors.some((color) => item.colors.includes(color))
+        selectedColors.some((c) => item.colors.includes(c))
 
       return (
         matchesQuery &&
@@ -479,6 +639,8 @@ export default function App() {
         </aside>
 
         <main className="content">
+          {isHome && <BannerCarousel />}
+
           <div className="content__top">
             <h1 className="content__title">{activeLabel}</h1>
             <span className="content__count">{filtered.length} товаров</span>
@@ -487,7 +649,11 @@ export default function App() {
           {filtered.length > 0 ? (
             <section className="grid">
               {filtered.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onOpen={setActiveProduct}
+                />
               ))}
             </section>
           ) : (
@@ -495,6 +661,10 @@ export default function App() {
           )}
         </main>
       </div>
+
+      {activeProduct && (
+        <ProductModal product={activeProduct} onClose={() => setActiveProduct(null)} />
+      )}
     </div>
   )
 }
