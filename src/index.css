@@ -5,8 +5,8 @@
 }
 
 body {
-  font-family: system-ui, -apple-system, sans-serif;
-  background: #F9F7F5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: #f6f6f9;
   -webkit-font-smoothing: antialiased;
 }
 
