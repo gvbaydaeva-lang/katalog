@@ -1,12 +1,406 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mode — Женская одежда</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mode — каталог женской одежды">
+  <title>Mode — Женская одежда</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<!--
+  ═══════════════════════════════════════════════════════════
+  КАК РЕДАКТИРОВАТЬ ТЕКСТ ВРУЧНУЮ
+  ═══════════════════════════════════════════════════════════
+  1. ШАПКА — логотип, подсказка в поиске
+  2. БАННЕРЫ — три слайда с акциями и новинками
+  3. КАТАЛОГ — названия категорий и подкатегорий
+  4. ТОВАРЫ — название, бренд, цена, описание (data-description)
+  5. Ссылка на мессенджер Max — data-max-url на теге <body>
+  ═══════════════════════════════════════════════════════════
+-->
+<body data-max-url="https://max.ru/">
+
+  <div class="app">
+
+    <!-- ═══ ШАПКА ═══ -->
+    <header class="header">
+      <button type="button" class="header__burger" id="burger-btn" aria-label="Каталог">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="header__logo">Mode</div>
+      <div class="header__search">
+        <span class="header__search-icon" aria-hidden="true">⌕</span>
+        <input type="search" id="search-input" placeholder="Искать на Mode">
+      </div>
+      <button type="button" class="header__cart" aria-label="Корзина">🛒</button>
+    </header>
+
+    <div class="layout">
+
+      <!-- ═══ КАТАЛОГ (бургер) ═══ -->
+      <aside class="sidebar sidebar--catalog" id="catalog-menu">
+        <div class="sidebar__head">
+          <h2>Каталог</h2>
+          <button type="button" id="catalog-close" aria-label="Закрыть">✕</button>
+        </div>
+        <nav class="catalog-tree">
+          <button type="button" class="catalog-tree__all is-active" id="catalog-all">Все товары</button>
+
+          <div class="catalog-tree__group">
+            <button type="button" class="catalog-tree__cat" data-category="Платья">
+              <span>Платья</span><span class="catalog-tree__arrow">›</span>
+            </button>
+            <ul class="catalog-tree__subs">
+              <li><button type="button" data-category="Платья" data-subcategory="Летние">Летние</button></li>
+              <li><button type="button" data-category="Платья" data-subcategory="Мини">Мини</button></li>
+              <li><button type="button" data-category="Платья" data-subcategory="Вечерние">Вечерние</button></li>
+              <li><button type="button" data-category="Платья" data-subcategory="Миди">Миди</button></li>
+            </ul>
+          </div>
+
+          <div class="catalog-tree__group">
+            <button type="button" class="catalog-tree__cat" data-category="Брюки">
+              <span>Брюки</span><span class="catalog-tree__arrow">›</span>
+            </button>
+            <ul class="catalog-tree__subs">
+              <li><button type="button" data-category="Брюки" data-subcategory="Классические">Классические</button></li>
+              <li><button type="button" data-category="Брюки" data-subcategory="Палаццо">Палаццо</button></li>
+              <li><button type="button" data-category="Брюки" data-subcategory="Широкие">Широкие</button></li>
+              <li><button type="button" data-category="Брюки" data-subcategory="Кюлоты">Кюлоты</button></li>
+            </ul>
+          </div>
+
+          <div class="catalog-tree__group">
+            <button type="button" class="catalog-tree__cat" data-category="Блузы">
+              <span>Блузы</span><span class="catalog-tree__arrow">›</span>
+            </button>
+            <ul class="catalog-tree__subs">
+              <li><button type="button" data-category="Блузы" data-subcategory="Льняные">Льняные</button></li>
+              <li><button type="button" data-category="Блузы" data-subcategory="Шёлковые">Шёлковые</button></li>
+              <li><button type="button" data-category="Блузы" data-subcategory="Офисные">Офисные</button></li>
+            </ul>
+          </div>
+
+          <div class="catalog-tree__group">
+            <button type="button" class="catalog-tree__cat" data-category="Верхняя одежда">
+              <span>Верхняя одежда</span><span class="catalog-tree__arrow">›</span>
+            </button>
+            <ul class="catalog-tree__subs">
+              <li><button type="button" data-category="Верхняя одежда" data-subcategory="Пальто">Пальто</button></li>
+              <li><button type="button" data-category="Верхняя одежда" data-subcategory="Тренчи">Тренчи</button></li>
+              <li><button type="button" data-category="Верхняя одежда" data-subcategory="Куртки">Куртки</button></li>
+            </ul>
+          </div>
+
+          <div class="catalog-tree__group">
+            <button type="button" class="catalog-tree__cat" data-category="Обувь">
+              <span>Обувь</span><span class="catalog-tree__arrow">›</span>
+            </button>
+            <ul class="catalog-tree__subs">
+              <li><button type="button" data-category="Обувь" data-subcategory="Кроссовки">Кроссовки</button></li>
+              <li><button type="button" data-category="Обувь" data-subcategory="Лоферы">Лоферы</button></li>
+              <li><button type="button" data-category="Обувь" data-subcategory="Сапоги">Сапоги</button></li>
+            </ul>
+          </div>
+        </nav>
+      </aside>
+
+      <button type="button" class="overlay" id="overlay" hidden aria-label="Закрыть меню"></button>
+
+      <!-- ═══ ФИЛЬТРЫ ═══ -->
+      <aside class="sidebar sidebar--filters" id="filters-panel">
+        <button type="button" class="filters-toggle" id="filters-toggle">
+          <span>Фильтры</span>
+          <span class="filters-toggle__arrow">›</span>
+        </button>
+        <div class="filters-body">
+          <div class="filter-group">
+            <button type="button" class="filter-group__head is-open">Размер <span>›</span></button>
+            <div class="filter-group__body is-open filter-chips">
+              <button type="button" data-filter-size="XS">XS</button>
+              <button type="button" data-filter-size="S">S</button>
+              <button type="button" data-filter-size="M">M</button>
+              <button type="button" data-filter-size="L">L</button>
+              <button type="button" data-filter-size="XL">XL</button>
+              <button type="button" data-filter-size="38">38</button>
+              <button type="button" data-filter-size="39">39</button>
+              <button type="button" data-filter-size="40">40</button>
+              <button type="button" data-filter-size="41">41</button>
+              <button type="button" data-filter-size="42">42</button>
+            </div>
+          </div>
+          <div class="filter-group">
+            <button type="button" class="filter-group__head">Цвет <span>›</span></button>
+            <div class="filter-group__body filter-colors">
+              <button type="button" data-filter-color="Чёрный"><span class="filter-colors__dot" style="background:#1a1a1a"></span>Чёрный</button>
+              <button type="button" data-filter-color="Белый"><span class="filter-colors__dot" style="background:#fff;border:1px solid #ddd"></span>Белый</button>
+              <button type="button" data-filter-color="Бежевый"><span class="filter-colors__dot" style="background:#d4c4b0"></span>Бежевый</button>
+              <button type="button" data-filter-color="Розовый"><span class="filter-colors__dot" style="background:#e8a0bf"></span>Розовый</button>
+              <button type="button" data-filter-color="Синий"><span class="filter-colors__dot" style="background:#3d5a80"></span>Синий</button>
+              <button type="button" data-filter-color="Зелёный"><span class="filter-colors__dot" style="background:#6b9080"></span>Зелёный</button>
+            </div>
+          </div>
+          <button type="button" class="filters-reset" id="filters-reset" hidden>Сбросить фильтры</button>
+        </div>
+      </aside>
+
+      <!-- ═══ ОСНОВНОЙ КОНТЕНТ ═══ -->
+      <main class="content">
+
+        <!-- ═══ БАННЕРЫ (редактируйте текст ниже) ═══ -->
+        <section class="banner" id="banner" aria-label="Акции и новинки">
+          <div class="banner__track" id="banner-track">
+            <article class="banner__slide banner__slide--sand">
+              <span class="banner__tag">Новинки</span>
+              <h2 class="banner__title">Весенняя коллекция 2026</h2>
+              <p class="banner__text">Платья и блузы из натуральных тканей — уже в каталоге</p>
+              <button type="button" class="banner__cta">Заказать</button>
+            </article>
+            <article class="banner__slide banner__slide--sage">
+              <span class="banner__tag">Акция</span>
+              <h2 class="banner__title">Скидки до −30%</h2>
+              <p class="banner__text">На верхнюю одежду и обувь до конца месяца</p>
+              <button type="button" class="banner__cta">Заказать</button>
+            </article>
+            <article class="banner__slide banner__slide--clay">
+              <span class="banner__tag">Хиты</span>
+              <h2 class="banner__title">Бестселлеры сезона</h2>
+              <p class="banner__text">Самые популярные модели — брюки, платья, тренчи</p>
+              <button type="button" class="banner__cta">Заказать</button>
+            </article>
+          </div>
+          <button type="button" class="banner__nav banner__nav--prev" id="banner-prev" aria-label="Предыдущий">‹</button>
+          <button type="button" class="banner__nav banner__nav--next" id="banner-next" aria-label="Следующий">›</button>
+          <div class="banner__dots">
+            <button type="button" class="is-active" aria-label="Баннер 1"></button>
+            <button type="button" aria-label="Баннер 2"></button>
+            <button type="button" aria-label="Баннер 3"></button>
+          </div>
+        </section>
+
+        <div class="content__top">
+          <h1 class="content__title" id="content-title">Все товары</h1>
+          <span class="content__count" id="content-count">10 товаров</span>
+        </div>
+
+        <!-- ═══ ТОВАРЫ (редактируйте названия, цены, бренды) ═══ -->
+        <section class="grid" id="products-grid">
+
+          <article class="card" tabindex="0"
+            data-category="Платья" data-subcategory="Миди"
+            data-sizes="S,M,L" data-colors="Чёрный,Бежевый"
+            data-description="Лёгкое платье из натурального шёлка с запахом и подкладкой. Идеально для офиса и вечера.">
+            <div class="card__image-wrap">
+              <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop" alt="Шёлковое платье миди с запахом">
+              <span class="card__badge">Новинка</span>
+            </div>
+            <div class="card__body">
+              <div class="card__price-row">
+                <span class="card__price">8 900 ₽</span>
+                <span class="card__old-price">11 900 ₽</span>
+              </div>
+              <p class="card__brand">Lumière</p>
+              <h2 class="card__title">Шёлковое платье миди с запахом</h2>
+            </div>
+          </article>
+
+          <article class="card" tabindex="0"
+            data-category="Платья" data-subcategory="Летние"
+            data-sizes="XS,S,M" data-colors="Белый,Розовый"
+            data-description="Воздушное хлопковое платье с открытыми плечами. Комфорт в жаркую погоду.">
+            <div class="card__image-wrap">
+              <img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&h=800&fit=crop" alt="Летнее платье на бретелях">
+              <span class="card__badge">-20%</span>
+            </div>
+            <div class="card__body">
+              <div class="card__price-row">
+                <span class="card__price">3 200 ₽</span>
+              </div>
+              <p class="card__brand">Solea</p>
+              <h2 class="card__title">Летнее платье на бретелях</h2>
+            </div>
+          </article>
+
+          <article class="card" tabindex="0"
+            data-category="Платья" data-subcategory="Мини"
+            data-sizes="XS,S,M,L" data-colors="Чёрный"
+            data-description="Элегантное мини-платье с деликатным блеском для особых случаев.">
+            <div class="card__image-wrap">
+              <img src="https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&h=800&fit=crop" alt="Мини-платье вечернее">
+            </div>
+            <div class="card__body">
+              <div class="card__price-row">
+                <span class="card__price">5 400 ₽</span>
+                <span class="card__old-price">7 200 ₽</span>
+              </div>
+              <p class="card__brand">Night Line</p>
+              <h2 class="card__title">Мини-платье вечернее с блёстками</h2>
+            </div>
+          </article>
+
+          <article class="card" tabindex="0"
+            data-category="Брюки" data-subcategory="Классические"
+            data-sizes="S,M,L,XL" data-colors="Чёрный,Бежевый,Синий"
+            data-description="Брюки прямого кроя со стрелками из смесовой шерсти. База гардероба.">
+            <div class="card__image-wrap">
+              <img src="https://images.unsplash.com/photo-1594633312681-425a7b956cc1?w=600&h=800&fit=crop" alt="Классические брюки">
+            </div>
+            <div class="card__body">
+              <div class="card__price-row">
+                <span class="card__price">5 600 ₽</span>
+              </div>
+              <p class="card__brand">Atelier 12</p>
+              <h2 class="card__title">Классические брюки со стрелками</h2>
+            </div>
+          </article>
+
+          <article class="card" tabindex="0"
+            data-category="Брюки" data-subcategory="Палаццо"
+            data-sizes="S,M,L" data-colors="Бежевый,Белый"
+            data-description="Широкие брюки палаццо с высокой посадкой. Мягкая драпировка и комфорт.">
+            <div class="card__image-wrap">
+              <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&h=800&fit=crop" alt="Брюки палаццо">
+              <span class="card__badge">Хит</span>
+            </div>
+            <div class="card__body">
+              <div class="card__price-row">
+                <span class="card__price">4 800 ₽</span>
+                <span class="card__old-price">6 100 ₽</span>
+              </div>
+              <p class="card__brand">Studio Form</p>
+              <h2 class="card__title">Брюки палаццо из тенсела</h2>
+            </div>
+          </article>
+
+          <article class="card" tabindex="0"
+            data-category="Верхняя одежда" data-subcategory="Пальто"
+            data-sizes="S,M,L" data-colors="Бежевый,Чёрный"
+            data-description="Тёплое двубортное пальто из кашемира. Классический силуэт на несколько сезонов.">
+            <div class="card__image-wrap">
+              <img src="https://images.unsplash.com/photo-1539533018447-63fcce267634?w=600&h=800&fit=crop" alt="Кашемировое пальто">
+            </div>
+            <div class="card__body">
+              <div class="card__price-row">
+                <span class="card__price">24 500 ₽</span>
+                <span class="card__old-price">32 000 ₽</span>
+              </div>
+              <p class="card__brand">Nord Line</p>
+              <h2 class="card__title">Кашемировое пальто двубортное</h2>
+            </div>
+          </article>
+
+          <article class="card" tabindex="0"
+            data-category="Блузы" data-subcategory="Льняные"
+            data-sizes="XS,S,M,L" data-colors="Белый,Бежевый,Зелёный"
+            data-description="Льняная блуза с отложным воротником. Натуральная фактура, свободный крой.">
+            <div class="card__image-wrap">
+              <img src="https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=600&h=800&fit=crop" alt="Блуза из льна">
+              <span class="card__badge">-15%</span>
+            </div>
+            <div class="card__body">
+              <div class="card__price-row">
+                <span class="card__price">4 200 ₽</span>
+                <span class="card__old-price">5 200 ₽</span>
+              </div>
+              <p class="card__brand">Studio Form</p>
+              <h2 class="card__title">Блуза из льна с воротником</h2>
+            </div>
+          </article>
+
+          <article class="card" tabindex="0"
+            data-category="Обувь" data-subcategory="Лоферы"
+            data-sizes="38,39,40,41" data-colors="Чёрный,Бежевый"
+            data-description="Лоферы из натуральной кожи на низком каблуке. Универсальная повседневная модель.">
+            <div class="card__image-wrap">
+              <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&h=800&fit=crop" alt="Кожаные лоферы">
+              <span class="card__badge">Хит</span>
+            </div>
+            <div class="card__body">
+              <div class="card__price-row">
+                <span class="card__price">9 800 ₽</span>
+              </div>
+              <p class="card__brand">Step &amp; Co</p>
+              <h2 class="card__title">Кожаные лоферы на низком каблуке</h2>
+            </div>
+          </article>
+
+          <article class="card" tabindex="0"
+            data-category="Верхняя одежда" data-subcategory="Тренчи"
+            data-sizes="S,M,L,XL" data-colors="Бежевый"
+            data-description="Тренч свободного кроя из плотного хлопка с поясом. Вне времени.">
+            <div class="card__image-wrap">
+              <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&h=800&fit=crop" alt="Тренч классический">
+              <span class="card__badge">Новинка</span>
+            </div>
+            <div class="card__body">
+              <div class="card__price-row">
+                <span class="card__price">18 900 ₽</span>
+                <span class="card__old-price">24 000 ₽</span>
+              </div>
+              <p class="card__brand">Nord Line</p>
+              <h2 class="card__title">Тренч классический oversize</h2>
+            </div>
+          </article>
+
+          <article class="card" tabindex="0"
+            data-category="Обувь" data-subcategory="Кроссовки"
+            data-sizes="38,39,40,41,42" data-colors="Белый,Чёрный"
+            data-description="Минималистичные кроссовки на лёгкой подошве. Для города и прогулок.">
+            <div class="card__image-wrap">
+              <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&h=800&fit=crop" alt="Кроссовки минимал">
+            </div>
+            <div class="card__body">
+              <div class="card__price-row">
+                <span class="card__price">8 400 ₽</span>
+                <span class="card__old-price">9 900 ₽</span>
+              </div>
+              <p class="card__brand">Step &amp; Co</p>
+              <h2 class="card__title">Кроссовки минимал белые</h2>
+            </div>
+          </article>
+
+        </section>
+
+        <p class="empty is-hidden" id="empty-msg">Ничего не найдено. Измените фильтры или запрос.</p>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ═══ КАРТОЧКА ТОВАРА (открывается по клику) ═══ -->
+  <div class="product-modal" id="product-modal" role="dialog" aria-modal="true">
+    <button type="button" class="product-modal__backdrop" id="modal-backdrop" aria-label="Закрыть"></button>
+    <div class="product-modal__sheet">
+      <button type="button" class="product-modal__close" id="modal-close" aria-label="Закрыть">✕</button>
+      <div class="product-modal__image">
+        <img id="modal-image" src="" alt="">
+        <span class="card__badge" id="modal-badge" hidden></span>
+      </div>
+      <div class="product-modal__info">
+        <p class="product-modal__brand" id="modal-brand"></p>
+        <h2 class="product-modal__name" id="modal-name"></h2>
+        <div class="card__price-row">
+          <span class="card__price card__price--lg" id="modal-price"></span>
+          <span class="card__old-price" id="modal-old-price"></span>
+        </div>
+        <p class="product-modal__desc" id="modal-desc"></p>
+        <div class="product-modal__section">
+          <p class="product-modal__label">Размер</p>
+          <div class="picker" id="modal-sizes"></div>
+        </div>
+        <div class="product-modal__section">
+          <p class="product-modal__label">Цвет</p>
+          <div class="picker" id="modal-colors"></div>
+        </div>
+        <div class="product-modal__actions">
+          <button type="button" class="card__btn card__btn--cart">В корзину</button>
+          <button type="button" class="card__btn card__btn--order">Заказать</button>
+          <a href="#" class="card__btn card__btn--ask" id="modal-ask" target="_blank" rel="noopener noreferrer">Задать вопрос</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
 </html>
